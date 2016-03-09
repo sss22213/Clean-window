@@ -1,0 +1,39 @@
+﻿Build started 2016/3/9 下午 02:49:45.
+     1>Project "D:\project\AR\webcam\VC\first\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\opencv\build\include\opencv /IC:\opencv\build\include\opencv2 /IC:\opencv\build\include /AI"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\\" /AI"C:\Program Files\Windows Kits\8.1\References\CommonConfiguration\Neutral" /AI"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\ConsoleApplication1.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /TP /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\mscorlib.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Data.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Drawing.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Windows.Forms.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xml.dll" /analyze- /errorReport:prompt /clr:nostdlib ConsoleApplication1.cpp MyForm.cpp
+         ConsoleApplication1.cpp
+     1>d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(57): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+     1>d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(128): warning C4584: 'DScreen' : base-class 'Picture' is already a base-class of 'TASK'
+                 d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(15) : see declaration of 'Picture'
+                 d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(95) : see declaration of 'TASK'
+     1>d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(129): warning C4584: 'DScreen' : base-class 'cv::Mat' is already a base-class of 'TASK'
+                 C:\opencv\build\include\opencv2/core/core.hpp(1712) : see declaration of 'cv::Mat'
+                 d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(95) : see declaration of 'TASK'
+     1>d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(169): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+         MyForm.cpp
+     1>d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(57): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+     1>d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(128): warning C4584: 'DScreen' : base-class 'Picture' is already a base-class of 'TASK'
+                 d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(15) : see declaration of 'Picture'
+                 d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(95) : see declaration of 'TASK'
+     1>d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(129): warning C4584: 'DScreen' : base-class 'cv::Mat' is already a base-class of 'TASK'
+                 C:\opencv\build\include\opencv2/core/core.hpp(1712) : see declaration of 'cv::Mat'
+                 d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(95) : see declaration of 'TASK'
+     1>d:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(169): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+         Generating Code...
+       Link:
+         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\project\AR\webcam\VC\first\ConsoleApplication1\Debug\ConsoleApplication1.exe" /INCREMENTAL /NOLOGO opencv_calib3d2411d.lib opencv_contrib2411d.lib opencv_core2411d.lib opencv_features2d2411d.lib opencv_flann2411d.lib opencv_gpu2411d.lib opencv_highgui2411d.lib opencv_imgproc2411d.lib opencv_legacy2411d.lib opencv_ml2411d.lib opencv_nonfree2411d.lib opencv_objdetect2411d.lib opencv_ocl2411d.lib opencv_photo2411d.lib opencv_stitching2411d.lib opencv_superres2411d.lib opencv_ts2411d.lib opencv_video2411d.lib opencv_videostab2411d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /ASSEMBLYRESOURCE:Debug\ConsoleApplication1.MyForm.resources /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\project\AR\webcam\VC\first\ConsoleApplication1\Debug\ConsoleApplication1.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 Debug\app.res
+         Debug\AssemblyInfo.obj
+         Debug\ConsoleApplication1.obj
+         Debug\MyForm.obj
+         Debug\stdafx.obj
+         "Debug\.NETFramework,Version=v4.5.AssemblyAttributes.obj"
+     1>opencv_ts2411d.lib(opencv_ts_pch.obj) : warning LNK4099: PDB 'opencv_ts2411d.pdb' was not found with 'opencv_ts2411d.lib(opencv_ts_pch.obj)' or at 'D:\project\AR\webcam\VC\first\ConsoleApplication1\Debug\opencv_ts2411d.pdb'; linking object as if no debug info
+         ConsoleApplication1.vcxproj -> D:\project\AR\webcam\VC\first\ConsoleApplication1\Debug\ConsoleApplication1.exe
+     1>Done Building Project "D:\project\AR\webcam\VC\first\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.85
