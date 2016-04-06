@@ -12,11 +12,11 @@ using namespace System::IO;
 
 //Puts picture Max count
 #define MAX_TASK 100
-
+//Trig object Max count-1
+#define Trig_num 100 
 //Picture,image process and display
 class Picture :public Mat
 {
-	
 	private:
 		string Name;
 		int ID;
@@ -85,6 +85,7 @@ class Picture :public Mat
 			
 			return 0;
 		}
+
 		//Add Position information
 		int Add_Position(int position_x1, int position_y1)
 		{
@@ -93,6 +94,20 @@ class Picture :public Mat
 			return 0;
 		}
 
+		//Get Picture Positive
+		int Pos_X()
+		{
+			return position_x;
+		}
+		int Pos_Y()
+		{
+			return position_y;
+		}
+		//Get image
+		Mat Get_image()
+		{
+			return image;
+		}
 		//friend class
 		friend class TASK;
 		friend class DScreen;
@@ -171,7 +186,6 @@ class DScreen : public Mat
 		
 			Mat Source = P1->image;
 			//Source Picture
-			
 			//Build there point rotation
 			Mat result = zeros(Source.rows, Source.cols, Source.type());
 
@@ -201,7 +215,6 @@ class DScreen : public Mat
 //webcam class
 class webcam
 {
-	#define Trig_num 100 
 	private:
 		//Trig Range
 		int Trig_X[Trig_num];
@@ -209,34 +222,105 @@ class webcam
 		int Trig_regX[Trig_num];
 		int Trig_regY[Trig_num];
 		
+		//camera
+		VideoCapture capture;
+
 		//Origin Picture
-		Picture *Parent_frame;
+		Mat Parent_frame;
+
 	public:
-		webcam(){};
+		//webcam(){};
 		~webcam(){};
-		webcam(Picture *origin)
+		webcam(VideoCapture Ocapture, int WIDTH, int HEIGHT,int FPS)
 		{
-			Parent_frame = origin;
+			if (WIDTH < 200 || HEIGHT < 200 || FPS < 10)
+			{
+				WIDTH = 1280; 
+				HEIGHT = 720; 
+				FPS = 30;
+			}
+			capture = Ocapture;
+			//Setting WebCam Format
+			capture.set(CV_CAP_PROP_FRAME_WIDTH, WIDTH);
+			capture.set(CV_CAP_PROP_FRAME_HEIGHT, HEIGHT);
+			capture.set(CV_CAP_PROP_FPS, FPS);
+		};
+
+		int webcam_Trig_init()
+		{ 
+			//Origin frame
+			capture.read(Parent_frame);
+
+			//Init Trig Array
+			for (int i = 0; i < Trig_num; i++)
+			{
+				this->Trig_X[i] = -1;
+				this->Trig_Y[i] = -1;
+				this->Trig_regX[i] = -1;
+				this->Trig_regY[i] = -1;
+			}
+			return 0;
 		}
+
+		Mat Catch_image()
+		{
+			static Mat frame;
+			capture.read(frame);
+			return frame;
+		}
+
 		int Trig_Create(int OTrig_X, int OTrig_Y, int OTrig_regX, int OTrig_regY,int prior1)
 		{
 			if (prior1>Trig_num-1)
 			{
 				return -1;
 			}
+
 			this->Trig_X[prior1] = OTrig_X;
 			this->Trig_Y[prior1] = OTrig_Y;
 			this->Trig_regX[prior1] = OTrig_regX;
 			this->Trig_regY[prior1] = OTrig_regY;
 			return 0;
 		}
-		void Trig_func()
+
+		int Trig_func()
 		{
-			for (int i = 0; i < Trig_num; i++)
-			{
-				
-			
-			}
-		
+				//update webcam picture
+				Mat update_frame;
+				Mat imageROI0;
+				Mat imageROI1;
+
+				for (int i = 0; i < Trig_num - 1; i++)
+				{
+					if (this->Trig_X[i] == -1 || this->Trig_Y[i] == -1 || this->Trig_regX[i] == -1 || this->Trig_regY[i] == -1)
+					{
+						return -1;
+					}
+
+					capture.read(update_frame);
+					waitKey(30);
+					//Parent frame
+					imageROI0 = Parent_frame(Rect(Trig_X[i], Trig_Y[i], Trig_regX[i], Trig_regY[i]));
+					//Sub frame
+					imageROI1 = update_frame(Rect(Trig_X[i], Trig_Y[i], Trig_regX[i], Trig_regY[i]));
+					//threshold
+					threshold(imageROI1, imageROI0, 80, 255, THRESH_BINARY_INV);
+					
+					double Sum_pixel = 0;
+					for (int i = 0; i < 3; i++)
+					{
+						//Scalar summary
+						Sum_pixel += sum(imageROI0)[i];
+					}
+
+					//NON black Percentage
+					if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > 0.2)
+					{
+						//Call Action Function
+						return 2;
+					}
+
+				}
+				return 0;
 		}
 };

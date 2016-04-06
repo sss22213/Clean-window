@@ -88,6 +88,7 @@ namespace ConsoleApplication1 {
 		Mat frame;
 		Mat frame1;
 		Mat frame2;
+
 		//Display
 		DScreen *disp = new DScreen;
 
@@ -118,10 +119,7 @@ namespace ConsoleApplication1 {
 		//Init Camera
 		VideoCapture capture(0);
 
-		//Setting WebCam Format(1280*720 @30FPS)
-		capture.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
-		capture.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
-		capture.set(CV_CAP_PROP_FPS, 30);
+		
 
 		//textBox1->Text = Convert::ToString((p1->pic_boarder_x[0][0]));
 		//textBox1->Text += "\n"+Convert::ToString((p1->pic_boarder_y[0][0]));
@@ -159,8 +157,26 @@ namespace ConsoleApplication1 {
 			textBox1->Text += "\n" + Convert::ToString(frame.at<uchar>(p1->pic_boarder_x[0][0], i));
 
 		}*/
+		webcam *W1 = new webcam(capture,1280,720,30);
+		W1->webcam_Trig_init();
+		W1->Trig_Create(0, 0, 20, 20, 0);
 		
 	#if 1
+		/*while (1)
+		{	
+			waitKey(30);
+			imshow("AW", W1->Catch_image());
+		}*/
+		//MessageBox::Show(Convert::ToString(W1->Trig_X[0]));
+		while (1)
+		{
+			if (W1->Trig_func() == 2)
+			{
+				MessageBox::Show("YES");
+			}
+			waitKey(30);
+		}
+		/*
 		while (1)
 		{
 			capture.read(frame2);
@@ -173,8 +189,8 @@ namespace ConsoleApplication1 {
 			//篩選hsvImg在HSV顏色空間屬於膚色的區域
 			Mat imageROI0;
 			Mat imageROI1;
-			imageROI0 = frame(Rect(0, 0, 800, 480));
-			imageROI1 = frame2(Rect(0, 0, 800, 480));
+			imageROI0 = frame(Rect(0, 0, 600,400));
+			imageROI1 = frame2(Rect(0, 0, 600, 400));
 
 			//Trigger test 
 			
@@ -186,39 +202,39 @@ namespace ConsoleApplication1 {
 				ss += sum(imageROI0)[i];
 			}
 			//NON black Percentage
-			if (ss / (800.0 * 480.0 * 255.0 * 3.0)>0.2)
+			if (ss / (600.0 * 400.0 * 255.0 * 3.0) > 0.2)
 			{
 				MessageBox::Show(Convert::ToString(ss / (800.0 * 480.0 * 255.0 * 3.0)));
 			}
 			imshow("AW", imageROI0);
 			
-		}
+		}*/
 	#else
 		while (1)
 		{
 			//Display Webcam Image
-			capture.read(frame);
+			Mat frames = W1->Catch_image();
 			//Display ALL Image
 			for (int i = 0; i < MAX_TASK - 1; i++)
 			{
-				if (T1->table_id[i] == 1)disp->Image_puts(frame,T1->table_1[i]);
+				if (T1->table_id[i] == 1)disp->Image_puts(frames, T1->table_1[i]);
 			}
 
 			disp->Image_Mov(p1, 5, 0);
-			waitKey(200);
-
-			/*if (p1->position_x > 500 )
+			
+			if (p1->Pos_X() > 200)
 			{
 				T1->TASK_Delete(p1);
-			}*/
+			}
 			disp->Image_Rotation(p1,90);
-			//disp->Image_Rotation(p2,90);
+			disp->Image_Rotation(p2,90);
 		
-
-			imshow("AW",frame);
+			waitKey(30);
+			imshow("AW", frames);
 			
 		}
 	#endif
+
 	}
 	
     
