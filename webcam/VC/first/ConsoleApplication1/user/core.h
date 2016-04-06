@@ -9,12 +9,15 @@ using namespace cv;
 using namespace System;
 using namespace System::IO;
 
+
 //Puts picture Max count
 #define MAX_TASK 100
 
+//Picture,image process and display
 class Picture :public Mat
 {
-	public:
+	
+	private:
 		string Name;
 		int ID;
 		string Path;
@@ -24,7 +27,7 @@ class Picture :public Mat
 		//Class picture Include Mat object entity
 		Mat image;
 
-		//Pibcure border
+		//Picure border
 		int pic_boarder_x[2][2];
 		int pic_boarder_y[2][2];
 
@@ -65,16 +68,15 @@ class Picture :public Mat
 			Mat pic = imread(this->Path);
 			this->image = pic;
 			
-			
 			//Calculate picture boarder
 			pic_boarder_x[0][0] = this->position_x;
 			pic_boarder_y[0][0] = this->position_y;
 
-			pic_boarder_x[0][1] = this->position_x;
-			pic_boarder_y[0][1] = this->position_y + pic.rows;
+			pic_boarder_x[0][1] = this->position_x + pic.cols;
+			pic_boarder_y[0][1] = this->position_y;
 
 			pic_boarder_x[1][0] = this->position_x;
-			pic_boarder_y[1][0] = this->position_y + pic.cols;
+			pic_boarder_y[1][0] = this->position_y + pic.rows;
 
 			pic_boarder_x[1][1] = this->position_x + pic.cols;
 			pic_boarder_y[1][1] = this->position_y + pic.rows;
@@ -91,8 +93,12 @@ class Picture :public Mat
 			return 0;
 		}
 
+		//friend class
+		friend class TASK;
+		friend class DScreen;
+		friend class webcam;
 };
-class TASK :public Picture
+class TASK
 {
 	public:
 		//Picture Array
@@ -124,9 +130,13 @@ class TASK :public Picture
 			this->table_id[P1->ID] = 0;
 			return 0;
 		}
+
+		//friend class
+		friend class DScreen;
 };
-class DScreen : public TASK, public Picture,public Mat
+class DScreen : public Mat
 {
+	
 	public:
 		DScreen(){};
 		~DScreen(){};
@@ -187,18 +197,46 @@ class DScreen : public TASK, public Picture,public Mat
 		}
 		
 };
-class AR
+
+//webcam class
+class webcam
 {
-	Picture *frame[2];
+	#define Trig_num 100 
+	private:
+		//Trig Range
+		int Trig_X[Trig_num];
+		int Trig_Y[Trig_num];
+		int Trig_regX[Trig_num];
+		int Trig_regY[Trig_num];
+		
+		//Origin Picture
+		Picture *Parent_frame;
 	public:
-		int Trigger(Mat foreground, Mat background)
+		webcam(){};
+		~webcam(){};
+		webcam(Picture *origin)
 		{
-			Mat result;
-			absdiff(background, foreground, result);
-
-			//return Pocture ID
-
+			Parent_frame = origin;
 		}
-	
-
+		int Trig_Create(int OTrig_X, int OTrig_Y, int OTrig_regX, int OTrig_regY,int prior1)
+		{
+			if (prior1>Trig_num-1)
+			{
+				return -1;
+			}
+			this->Trig_X[prior1] = OTrig_X;
+			this->Trig_Y[prior1] = OTrig_Y;
+			this->Trig_regX[prior1] = OTrig_regX;
+			this->Trig_regY[prior1] = OTrig_regY;
+			return 0;
+		}
+		void Trig_func()
+		{
+			for (int i = 0; i < Trig_num; i++)
+			{
+				
+			
+			}
+		
+		}
 };

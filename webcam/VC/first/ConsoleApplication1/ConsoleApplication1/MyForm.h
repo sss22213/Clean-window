@@ -96,8 +96,8 @@ namespace ConsoleApplication1 {
 		T1->TASK_Init();
 
 		//Create Picture
-		Picture *p1 = new Picture("picture1", 0, "D:\\project\\AR\\image\\unbutu.png",0,0);
-		Picture *p2 = new Picture("picture2", 98, "D:\\project\\AR\\image\\linux.jpg",0,0);
+		Picture *p1 = new Picture("picture1", 98, "C:\\project\\AR\\image\\linux.jpg",0,200);
+		Picture *p2 = new Picture("picture2", 1, "C:\\project\\AR\\image\\0613.jpg",0,0);
 
 		//Load Picture
 		if (p1->Picture_Load()!=0)
@@ -123,34 +123,74 @@ namespace ConsoleApplication1 {
 		capture.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
 		capture.set(CV_CAP_PROP_FPS, 30);
 
-		textBox1->Text = Convert::ToString((p2->pic_boarder_x[0][0]));
-		textBox1->Text += "\n"+Convert::ToString((p2->pic_boarder_y[0][0]));
-		textBox1->Text += "\n"+Convert::ToString((p2->pic_boarder_x[0][1]));
-		textBox1->Text += "\n" + Convert::ToString((p2->pic_boarder_y[0][1]));
-		textBox1->Text += "\n" + Convert::ToString((p2->pic_boarder_x[1][0]));
-		textBox1->Text += "\n" + Convert::ToString((p2->pic_boarder_y[1][0]));
-		textBox1->Text += "\n" + Convert::ToString((p2->pic_boarder_x[1][1]));
-		textBox1->Text += "\n" + Convert::ToString((p2->pic_boarder_y[1][1]));
-		//textBox1->Text = textBox1->Text+Convert::ToString((p2->image));
-
+		//textBox1->Text = Convert::ToString((p1->pic_boarder_x[0][0]));
+		//textBox1->Text += "\n"+Convert::ToString((p1->pic_boarder_y[0][0]));
+		//textBox1->Text += "\n"+Convert::ToString((p2->pic_boarder_x[0][1]));
+		//textBox1->Text += "\n" + Convert::ToString((p2->pic_boarder_y[0][1]));*/
+		//textBox1->Text += "\n" + Convert::ToString((p1->pic_boarder_x[1][0]));
+		//textBox1->Text += "\n" + Convert::ToString((p1->pic_boarder_y[1][0]));
+		//textBox1->Text += "\n" + Convert::ToString((p1->pic_boarder_x[1][1]));
+		//textBox1->Text += "\n" + Convert::ToString((p1->pic_boarder_y[1][1]));
+		//textBox1->Text = textBox1->Text+Convert::ToString((p2->image));*/
+		//textBox1->Text += "\n";
 		capture.read(frame);
-		
-	#if 0
-		while (1)
+		/*
+		for (int i = p1->pic_boarder_x[0][0]; i < (p1->pic_boarder_x[0][1] - p1->pic_boarder_x[0][0]) ; i+=2)
 		{
 			
+			textBox1->Text += "\n" + Convert::ToString(frame.at<uchar>(i, p1->pic_boarder_y[0][1]));
+
+		}
+
+		textBox1->Text += ("\n" + "NEXT1");
+		
+		for (int i = p1->pic_boarder_y[0][0]; i < (p1->pic_boarder_y[1][0] - p1->pic_boarder_y[0][0]); i += 2)
+		{
+
+			textBox1->Text += "\n" + Convert::ToString(frame.at<uchar>(p1->pic_boarder_x[0][0], i));
+
+		}
+
+		textBox1->Text += ("\n" + "NEXT2");
+
+		for (int i = p1->pic_boarder_y[0][0]; i < (p1->pic_boarder_y[1][0] - p1->pic_boarder_y[0][0]); i += 2)
+		{
+
+			textBox1->Text += "\n" + Convert::ToString(frame.at<uchar>(p1->pic_boarder_x[0][0], i));
+
+		}*/
+		
+	#if 1
+		while (1)
+		{
+			capture.read(frame2);
 			waitKey(30);
-			
-			capture.read(frame1);
-			absdiff(frame, frame1, frame1);
+			//capture.read(frame);
+			//capture.read(frame1);
+			//absdiff(frame, frame1, frame1);
 			//cvtColor(frame1, frame1, CV_BGR2HSV);
 			//inRange(frame1, Scalar(0, 58, 20), Scalar(50, 173, 230), Temp);
 			//篩選hsvImg在HSV顏色空間屬於膚色的區域
-			threshold(frame1, frame1,45, 255, THRESH_BINARY_INV);
+			Mat imageROI0;
+			Mat imageROI1;
+			imageROI0 = frame(Rect(0, 0, 800, 480));
+			imageROI1 = frame2(Rect(0, 0, 800, 480));
 
-			imshow("AW1", frame);
-			imshow("AW2", frame1);
-			waitKey(30);
+			//Trigger test 
+			
+			threshold(imageROI1, imageROI0, 80, 255, THRESH_BINARY_INV);
+			double ss = 0;
+			for (int i = 0; i < 3; i++)
+			{
+				//scalar summary
+				ss += sum(imageROI0)[i];
+			}
+			//NON black Percentage
+			if (ss / (800.0 * 480.0 * 255.0 * 3.0)>0.2)
+			{
+				MessageBox::Show(Convert::ToString(ss / (800.0 * 480.0 * 255.0 * 3.0)));
+			}
+			imshow("AW", imageROI0);
 			
 		}
 	#else
@@ -164,14 +204,14 @@ namespace ConsoleApplication1 {
 				if (T1->table_id[i] == 1)disp->Image_puts(frame,T1->table_1[i]);
 			}
 
-			disp->Image_Mov(p1, 10, 3);
-			waitKey(30);
+			disp->Image_Mov(p1, 5, 0);
+			waitKey(200);
 
-			if (p1->position_x > 1000 )
+			/*if (p1->position_x > 500 )
 			{
 				T1->TASK_Delete(p1);
-			}
-			disp->Image_Rotation(p1,20);
+			}*/
+			disp->Image_Rotation(p1,90);
 			//disp->Image_Rotation(p2,90);
 		
 
