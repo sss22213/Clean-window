@@ -97,8 +97,8 @@ namespace ConsoleApplication1 {
 		T1->TASK_Init();
 
 		//Create Picture
-		Picture *p1 = new Picture("picture1", 98, "C:\\project\\AR\\image\\linux.jpg",0,200);
-		Picture *p2 = new Picture("picture2", 1, "C:\\project\\AR\\image\\0613.jpg",0,0);
+		Picture *p1 = new Picture("picture1", 98, "C:\\project\\AR\\image\\2.png",0,0);
+		Picture *p2 = new Picture("picture2", 1, "C:\\project\\AR\\image\\chrome.png",200,200);
 
 		//Load Picture
 		if (p1->Picture_Load()!=0)
@@ -157,11 +157,11 @@ namespace ConsoleApplication1 {
 			textBox1->Text += "\n" + Convert::ToString(frame.at<uchar>(p1->pic_boarder_x[0][0], i));
 
 		}*/
-		webcam *W1 = new webcam(capture,1280,720,30);
+		webcam *W1 = new webcam(capture,1024,768,30);
 		W1->webcam_Trig_init();
-		W1->Trig_Create(0, 0, 20, 20, 0);
+		W1->Trig_Create(p1->Pos_X(), p1->Pos_Y(), 256, 256, 0);
 		
-	#if 1
+	#if 0
 		/*while (1)
 		{	
 			waitKey(30);
@@ -175,6 +175,7 @@ namespace ConsoleApplication1 {
 				MessageBox::Show("YES");
 			}
 			waitKey(30);
+			imshow("AW", W1->Catch_image());
 		}
 		/*
 		while (1)
@@ -219,7 +220,7 @@ namespace ConsoleApplication1 {
 			{
 				if (T1->table_id[i] == 1)disp->Image_puts(frames, T1->table_1[i]);
 			}
-
+			//W1->Trig_Pos_Change(p1->Pos_X(), p1->Pos_Y(), 256, 256, 0);
 			disp->Image_Mov(p1, 5, 0);
 			
 			if (p1->Pos_X() > 200)
@@ -228,10 +229,15 @@ namespace ConsoleApplication1 {
 			}
 			disp->Image_Rotation(p1,90);
 			disp->Image_Rotation(p2,90);
-		
+
+			if (W1->Trig_func() == 2)
+			{
+				MessageBox::Show("YES");
+			}
+
 			waitKey(30);
+			namedWindow("AW", WINDOW_NORMAL);
 			imshow("AW", frames);
-			
 		}
 	#endif
 

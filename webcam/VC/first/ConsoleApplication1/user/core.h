@@ -14,6 +14,7 @@ using namespace System::IO;
 #define MAX_TASK 100
 //Trig object Max count-1
 #define Trig_num 100 
+
 //Picture,image process and display
 class Picture :public Mat
 {
@@ -269,6 +270,8 @@ class webcam
 			return frame;
 		}
 
+		#define  Trig_Create Trig_Pos_Change //Lazy to Write
+		
 		int Trig_Create(int OTrig_X, int OTrig_Y, int OTrig_regX, int OTrig_regY,int prior1)
 		{
 			if (prior1>Trig_num-1)
@@ -282,7 +285,18 @@ class webcam
 			this->Trig_regY[prior1] = OTrig_regY;
 			return 0;
 		}
-
+		/*int Trig_Pos_Change(int OTrig_X, int OTrig_Y, int OTrig_regX, int OTrig_regY, int prior1)
+		{
+			if (prior1>Trig_num - 1)
+			{
+				return -1;
+			}
+			this->Trig_X[prior1] = OTrig_X;
+			this->Trig_Y[prior1] = OTrig_Y;
+			this->Trig_regX[prior1] = OTrig_regX;
+			this->Trig_regY[prior1] = OTrig_regY;
+			return 0;
+		}*/
 		int Trig_func()
 		{
 				//update webcam picture
@@ -294,7 +308,7 @@ class webcam
 				{
 					if (this->Trig_X[i] == -1 || this->Trig_Y[i] == -1 || this->Trig_regX[i] == -1 || this->Trig_regY[i] == -1)
 					{
-						return -1;
+						break;
 					}
 
 					capture.read(update_frame);
@@ -314,7 +328,7 @@ class webcam
 					}
 
 					//NON black Percentage
-					if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > 0.2)
+					if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > 0.05)
 					{
 						//Call Action Function
 						return 2;
