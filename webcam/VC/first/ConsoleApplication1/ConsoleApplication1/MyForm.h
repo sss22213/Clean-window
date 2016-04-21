@@ -157,10 +157,12 @@ namespace ConsoleApplication1 {
 			textBox1->Text += "\n" + Convert::ToString(frame.at<uchar>(p1->pic_boarder_x[0][0], i));
 
 		}*/
-		webcam *W1 = new webcam(capture,1024,768,30);
+		webcam *W1 = new webcam(capture,1280,1024,30);
 		W1->webcam_Trig_init();
-		W1->Trig_Create(p1->Pos_X(), p1->Pos_Y(), 256, 256, 0);
-		
+		W1->Trig_Create(p1->Pos_X(), p1->Pos_Y(), 20, 20, 0);
+		W1->Trig_Create(200, 200, 200,200, 1);
+		W1->Trig_hide(1);
+
 	#if 0
 		/*while (1)
 		{	
@@ -170,46 +172,13 @@ namespace ConsoleApplication1 {
 		//MessageBox::Show(Convert::ToString(W1->Trig_X[0]));
 		while (1)
 		{
-			if (W1->Trig_func() == 2)
-			{
-				MessageBox::Show("YES");
-			}
-			waitKey(30);
-			imshow("AW", W1->Catch_image());
+			//Display Webcam Image
+			//Mat frames = W1->Catch_image();
+			MessageBox::Show(Convert::ToString(W1->Trig_func1()));
+			//W1->Trig_func1();
+			//namedWindow("AW", WINDOW_NORMAL);
+			//imshow("AW", W1->Trig_func1());
 		}
-		/*
-		while (1)
-		{
-			capture.read(frame2);
-			waitKey(30);
-			//capture.read(frame);
-			//capture.read(frame1);
-			//absdiff(frame, frame1, frame1);
-			//cvtColor(frame1, frame1, CV_BGR2HSV);
-			//inRange(frame1, Scalar(0, 58, 20), Scalar(50, 173, 230), Temp);
-			//篩選hsvImg在HSV顏色空間屬於膚色的區域
-			Mat imageROI0;
-			Mat imageROI1;
-			imageROI0 = frame(Rect(0, 0, 600,400));
-			imageROI1 = frame2(Rect(0, 0, 600, 400));
-
-			//Trigger test 
-			
-			threshold(imageROI1, imageROI0, 80, 255, THRESH_BINARY_INV);
-			double ss = 0;
-			for (int i = 0; i < 3; i++)
-			{
-				//scalar summary
-				ss += sum(imageROI0)[i];
-			}
-			//NON black Percentage
-			if (ss / (600.0 * 400.0 * 255.0 * 3.0) > 0.2)
-			{
-				MessageBox::Show(Convert::ToString(ss / (800.0 * 480.0 * 255.0 * 3.0)));
-			}
-			imshow("AW", imageROI0);
-			
-		}*/
 	#else
 		while (1)
 		{
@@ -227,14 +196,15 @@ namespace ConsoleApplication1 {
 			{
 				T1->TASK_Delete(p1);
 			}
-			disp->Image_Rotation(p1,90);
-			disp->Image_Rotation(p2,90);
-
-			if (W1->Trig_func() == 2)
+			
+			//Trig
+			if (W1->Trig_func1() == 2)
 			{
+				W1->Trig_hide(0);
+				W1->Trig_Restore(1);
 				MessageBox::Show("YES");
 			}
-
+			
 			waitKey(30);
 			namedWindow("AW", WINDOW_NORMAL);
 			imshow("AW", frames);

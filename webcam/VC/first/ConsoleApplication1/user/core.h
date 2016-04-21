@@ -14,6 +14,10 @@ using namespace System::IO;
 #define MAX_TASK 100
 //Trig object Max count-1
 #define Trig_num 100 
+//Trig_Percent   
+#define Trig_Percent 0.05
+//threshold num
+#define threshold_num 80
 
 //Picture,image process and display
 class Picture :public Mat
@@ -223,6 +227,12 @@ class webcam
 		int Trig_regX[Trig_num];
 		int Trig_regY[Trig_num];
 		
+		//Trig Pointer
+		int Effective[Trig_num];
+
+		//Trig callback function
+		int(*Trig_callfunc[Trig_num])(void);
+
 		//camera
 		VideoCapture capture;
 
@@ -259,6 +269,7 @@ class webcam
 				this->Trig_Y[i] = -1;
 				this->Trig_regX[i] = -1;
 				this->Trig_regY[i] = -1;
+				this->Effective[i] = -1;
 			}
 			return 0;
 		}
@@ -283,20 +294,33 @@ class webcam
 			this->Trig_Y[prior1] = OTrig_Y;
 			this->Trig_regX[prior1] = OTrig_regX;
 			this->Trig_regY[prior1] = OTrig_regY;
+			this->Effective[prior1] = 1;
 			return 0;
 		}
-		/*int Trig_Pos_Change(int OTrig_X, int OTrig_Y, int OTrig_regX, int OTrig_regY, int prior1)
+
+		//Delete Trig Region
+		int Trig_Del(int prior1)
 		{
-			if (prior1>Trig_num - 1)
-			{
-				return -1;
-			}
-			this->Trig_X[prior1] = OTrig_X;
-			this->Trig_Y[prior1] = OTrig_Y;
-			this->Trig_regX[prior1] = OTrig_regX;
-			this->Trig_regY[prior1] = OTrig_regY;
+			/*this->Trig_X[prior1] = -1;
+			this->Trig_Y[prior1] = -1;
+			this->Trig_regX[prior1] = -1;
+			this->Trig_regY[prior1] = -1;*/
+			this->Effective[prior1] - 1;
 			return 0;
-		}*/
+
+		}
+		int Trig_Restore(int prior1)
+		{
+			this->Effective[prior1] = 1;
+			return 0;
+		}
+		int Trig_hide(int prior1)
+		{
+			
+			this->Effective[prior1]= -1;
+			return 0;
+		}
+
 		int Trig_func()
 		{
 				//update webcam picture
@@ -310,16 +334,17 @@ class webcam
 					{
 						break;
 					}
-
+					
 					capture.read(update_frame);
 					waitKey(30);
+					
 					//Parent frame
 					imageROI0 = Parent_frame(Rect(Trig_X[i], Trig_Y[i], Trig_regX[i], Trig_regY[i]));
 					//Sub frame
 					imageROI1 = update_frame(Rect(Trig_X[i], Trig_Y[i], Trig_regX[i], Trig_regY[i]));
 					//threshold
-					threshold(imageROI1, imageROI0, 80, 255, THRESH_BINARY_INV);
 					
+					threshold(imageROI1, imageROI0, threshold_num, 255, THRESH_BINARY_INV);
 					double Sum_pixel = 0;
 					for (int i = 0; i < 3; i++)
 					{
@@ -328,7 +353,7 @@ class webcam
 					}
 
 					//NON black Percentage
-					if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > 0.05)
+					if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > Trig_Percent)
 					{
 						//Call Action Function
 						return 2;
@@ -337,4 +362,59 @@ class webcam
 				}
 				return 0;
 		}
+
+		/******************************/
+		int Trig_func1()
+		{
+			//update webcam picture
+			Mat update_frame;
+			Mat imageROI0;
+			Mat imageROI1;
+			Mat hsv;
+			Mat b; //各顏色的閥值
+			for (int i = 0; i < Trig_num - 1; i++)
+			{
+			/*	if (this->Trig_X[i] == -1 || this->Trig_Y[i] == -1 || this->Trig_regX[i] == -1 || this->Trig_regY[i] == -1)
+				{
+					continue;
+				}*/
+				if (this->Effective[i] == -1)
+				{
+					continue;
+				}
+				capture.read(update_frame);
+				waitKey(30);
+				imageROI1 = update_frame(Rect(Trig_X[i], Trig_Y[i], Trig_regX[i], Trig_regY[i]));
+
+				Mat mask = Mat::zeros(imageROI1.rows, imageROI1.cols, CV_8U); //為了濾掉其他顏色
+
+				//Parent frame
+				//imageROI0 = Parent_frame(Rect(Trig_X[i], Trig_Y[i], Trig_regX[i], Trig_regY[i]));
+				///Sub frame
+				//threshold
+				cvtColor(imageROI1, hsv, CV_BGR2HSV);
+
+				inRange(hsv, Scalar(90, 100, 0), Scalar(130, 255, 255), b);
+				//二值化：h值介於0~10 & s值介於100~255 & v值介於120~255 blue
+
+				//threshold(imageROI1, imageROI0, threshold_num, 255, THRESH_BINARY_INV);
+				double Sum_pixel = 0;
+				for (int i = 0; i < 3; i++)
+				{
+					//Scalar summary
+					Sum_pixel += sum(b)[i];
+				}
+				//return Sum_pixel;
+				///NON black Percentage
+				if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > 0.05)
+				{
+					//Call Action Function
+					return 2;
+				}
+				//imshow("result", b);//show結果
+				
+			}
+			return 0;
+		}
+		
 };

@@ -1,21 +1,35 @@
-﻿Build started 2016/4/7 下午 04:45:27.
+﻿Build started 2016/04/21 下午 01:23:56.
      1>Project "C:\project\AR\webcam\VC\first\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\opencv\build\include\opencv2 /IC:\opencv\build\include\opencv /IC:\opencv\build\include /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\\" /AI"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\ConsoleApplication1.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\mscorlib.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xml.dll" /analyze- /errorReport:prompt /clr:nostdlib ConsoleApplication1.cpp MyForm.cpp
          ConsoleApplication1.cpp
-     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(61): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>ConsoleApplication1.cpp(3): warning C4005: '__CLR_VER' : macro redefinition
+                 command-line arguments :  see previous definition of '__CLR_VER'
+     1>ConsoleApplication1.cpp(3): warning C4651: '/D__CLR_VER=40601073' specified for precompiled header but not for current compile
+     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(65): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(194): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(331): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
-                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(324) : definition of 'i' ignored
-                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(307) : definition of 'i' used
+     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(198): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(308): warning C4552: '-' : operator has no effect; expected operator with side-effect
+     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(356): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
+                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(349) : definition of 'i' ignored
+                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(331) : definition of 'i' used
+     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(409): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
+                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(402) : definition of 'i' ignored
+                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(375) : definition of 'i' used
          MyForm.cpp
-     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(61): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MyForm.cpp(1): warning C4005: '__CLR_VER' : macro redefinition
+                 command-line arguments :  see previous definition of '__CLR_VER'
+     1>MyForm.cpp(1): warning C4651: '/D__CLR_VER=40601073' specified for precompiled header but not for current compile
+     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(65): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(194): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(331): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
-                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(324) : definition of 'i' ignored
-                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(307) : definition of 'i' used
+     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(198): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(308): warning C4552: '-' : operator has no effect; expected operator with side-effect
+     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(356): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
+                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(349) : definition of 'i' ignored
+                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(331) : definition of 'i' used
+     1>c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(409): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
+                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(402) : definition of 'i' ignored
+                 c:\project\ar\webcam\vc\first\consoleapplication1\consoleapplication1\../user/core.h(375) : definition of 'i' used
          Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\project\AR\webcam\VC\first\ConsoleApplication1\Debug\ConsoleApplication1.exe" /INCREMENTAL /NOLOGO opencv_calib3d2411d.lib opencv_contrib2411d.lib opencv_core2411d.lib opencv_features2d2411d.lib opencv_flann2411d.lib opencv_gpu2411d.lib opencv_highgui2411d.lib opencv_imgproc2411d.lib opencv_legacy2411d.lib opencv_ml2411d.lib opencv_nonfree2411d.lib opencv_objdetect2411d.lib opencv_ocl2411d.lib opencv_photo2411d.lib opencv_stitching2411d.lib opencv_superres2411d.lib opencv_ts2411d.lib opencv_video2411d.lib opencv_videostab2411d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /ASSEMBLYRESOURCE:Debug\ConsoleApplication1.MyForm.resources /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\project\AR\webcam\VC\first\ConsoleApplication1\Debug\ConsoleApplication1.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 Debug\app.res
@@ -30,4 +44,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.40
+Time Elapsed 00:00:02.03
