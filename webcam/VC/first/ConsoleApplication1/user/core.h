@@ -54,7 +54,7 @@ class Picture :public Mat
 		int Picture_Load()
 		{
 			//ID check
-			if (this->ID > MAX_TASK - 2)
+			if (this->ID > MAX_TASK - 1)
 			{
 				//ID too Large
 				return -2;
@@ -150,7 +150,12 @@ class TASK
 			this->table_id[P1->ID] = 0;
 			return 0;
 		}
-
+		//Restore Picture information into display table
+		int TASK_Resotre(Picture *P1)
+		{
+			this->table_id[P1->ID] = 1;
+			return 0;
+		}
 		//friend class
 		friend class DScreen;
 };
@@ -282,7 +287,6 @@ class webcam
 		}
 
 		#define  Trig_Create Trig_Pos_Change //Lazy to Write
-		
 		int Trig_Create(int OTrig_X, int OTrig_Y, int OTrig_regX, int OTrig_regY,int prior1)
 		{
 			if (prior1>Trig_num-1)
@@ -320,7 +324,7 @@ class webcam
 			this->Effective[prior1]= -1;
 			return 0;
 		}
-
+		/**Backgroung_Trigger**/
 		int Trig_func()
 		{
 				//update webcam picture
@@ -330,11 +334,15 @@ class webcam
 
 				for (int i = 0; i < Trig_num - 1; i++)
 				{
-					if (this->Trig_X[i] == -1 || this->Trig_Y[i] == -1 || this->Trig_regX[i] == -1 || this->Trig_regY[i] == -1)
+					/*if (this->Trig_X[i] == -1 || this->Trig_Y[i] == -1 || this->Trig_regX[i] == -1 || this->Trig_regY[i] == -1)
 					{
-						break;
+						continue;
+					}*/
+					if (this->Effective[i] == -1)
+					{
+						continue;
 					}
-					
+
 					capture.read(update_frame);
 					waitKey(30);
 					
@@ -356,13 +364,14 @@ class webcam
 					if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > Trig_Percent)
 					{
 						//Call Action Function
-						return 2;
+						return i;
 					}
 
 				}
 				return 0;
 		}
-
+		/******************************/
+		//Special Case
 		/******************************/
 		int Trig_func1()
 		{
@@ -374,45 +383,36 @@ class webcam
 			Mat b; //各顏色的閥值
 			for (int i = 0; i < Trig_num - 1; i++)
 			{
-			/*	if (this->Trig_X[i] == -1 || this->Trig_Y[i] == -1 || this->Trig_regX[i] == -1 || this->Trig_regY[i] == -1)
-				{
-					continue;
-				}*/
 				if (this->Effective[i] == -1)
 				{
 					continue;
 				}
 				capture.read(update_frame);
-				waitKey(30);
+				
 				imageROI1 = update_frame(Rect(Trig_X[i], Trig_Y[i], Trig_regX[i], Trig_regY[i]));
 
 				Mat mask = Mat::zeros(imageROI1.rows, imageROI1.cols, CV_8U); //為了濾掉其他顏色
 
 				//Parent frame
-				//imageROI0 = Parent_frame(Rect(Trig_X[i], Trig_Y[i], Trig_regX[i], Trig_regY[i]));
 				///Sub frame
 				//threshold
 				cvtColor(imageROI1, hsv, CV_BGR2HSV);
-
 				inRange(hsv, Scalar(90, 100, 0), Scalar(130, 255, 255), b);
-				//二值化：h值介於0~10 & s值介於100~255 & v值介於120~255 blue
 
-				//threshold(imageROI1, imageROI0, threshold_num, 255, THRESH_BINARY_INV);
 				double Sum_pixel = 0;
-				for (int i = 0; i < 3; i++)
+				for (unsigned char i = 0; i < 3; i++)
 				{
 					//Scalar summary
 					Sum_pixel += sum(b)[i];
 				}
 				//return Sum_pixel;
 				///NON black Percentage
-				if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > 0.05)
+				
+				if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > 0.015)
 				{
 					//Call Action Function
-					return 2;
+					return i;
 				}
-				//imshow("result", b);//show結果
-				
 			}
 			return 0;
 		}

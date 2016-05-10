@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 #include "MyForm.h"
-
+#include "MyForm1.h"
 using namespace System;
 using namespace ConsoleApplication1;
 
