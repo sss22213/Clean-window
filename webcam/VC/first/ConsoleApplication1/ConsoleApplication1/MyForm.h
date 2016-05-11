@@ -11,6 +11,7 @@
 namespace ConsoleApplication1 {
 
 	using namespace System;
+	using namespace System::Media;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Windows::Forms;
@@ -216,8 +217,11 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		timer1->Interval = 1000;
 		//initial time number
 		time = 0;
-		//
-		
+		//Play sound
+		SoundPlayer^ play=gcnew SoundPlayer;
+		play->SoundLocation = "C:\\project\\AR\\Bad.wav";
+		play->Load();
+		play->Play();
 		//
 		Mat frame;
 		Mat frame1;
@@ -232,7 +236,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		//Create Picture
 		#define picnum 20+4
 		//1 row
-		Picture *p1 = new Picture("picture1", 1, "C:\\project\\AR\\image\\base1.png", 0, 0);
+		//Picture *p1 = new Picture("picture1", 1, "C:\\project\\AR\\image\\base1.png", 0, 0);
 		Picture *p2 = new Picture("picture2", 2, "C:\\project\\AR\\image\\base1.png", 200, 0);
 		Picture *p3 = new Picture("picture3", 3, "C:\\project\\AR\\image\\base1.png", 400, 0);
 		Picture *p4 = new Picture("picture4", 4, "C:\\project\\AR\\image\\base1.png", 600, 0);
@@ -242,9 +246,9 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		Picture *p7 = new Picture("picture7", 7, "C:\\project\\AR\\image\\base1.png", 600, 150);
 		Picture *p8 = new Picture("picture8", 8, "C:\\project\\AR\\image\\base1.png", 400, 150);
 		Picture *p9 = new Picture("picture9", 9, "C:\\project\\AR\\image\\base1.png", 200, 150);
-		Picture *p10 = new Picture("picture10", 10, "C:\\project\\AR\\image\\base1.png", 0, 150);
+		//Picture *p10 = new Picture("picture10", 10, "C:\\project\\AR\\image\\base1.png", 0, 150);
 		//3 row
-		Picture *p11 = new Picture("picture11", 11, "C:\\project\\AR\\image\\base1.png", 0, 300);
+		//Picture *p11 = new Picture("picture11", 11, "C:\\project\\AR\\image\\base1.png", 0, 300);
 		Picture *p12 = new Picture("picture12", 12, "C:\\project\\AR\\image\\base1.png", 200, 300);
 		Picture *p13 = new Picture("picture13", 13, "C:\\project\\AR\\image\\base1.png", 400, 300);
 		Picture *p14 = new Picture("picture14", 14, "C:\\project\\AR\\image\\base1.png", 600, 300);
@@ -254,7 +258,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		Picture *p17 = new Picture("picture17", 17, "C:\\project\\AR\\image\\base1.png", 600, 450);
 		Picture *p18 = new Picture("picture18", 18, "C:\\project\\AR\\image\\base1.png", 400, 450);
 		Picture *p19 = new Picture("picture19", 19, "C:\\project\\AR\\image\\base1.png", 200, 450);
-		Picture *p20 = new Picture("picture20", 20, "C:\\project\\AR\\image\\base1.png", 0, 450);
+		//Picture *p20 = new Picture("picture20", 20, "C:\\project\\AR\\image\\base1.png", 0, 450);
 		//5 row
 		Picture *p21 = new Picture("picture21", 21, "C:\\project\\AR\\image\\base1.png",200, 600);
 		Picture *p22=  new Picture("picture22", 22, "C:\\project\\AR\\image\\base1.png",400, 600);
@@ -298,7 +302,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 
 		//Trigger Counter
 		unsigned char i = 0;
-		W1->Trig_Create(pic_ary[1]->Pos_X(), pic_ary[1]->Pos_Y(), 200, 150, 1);
+		W1->Trig_Create(pic_ary[1]->Pos_X()+5, pic_ary[1]->Pos_Y()+5, 200-50, 150-50, 1);
 		//formal 
 	#if 0
 		while (1)
@@ -350,7 +354,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			{
 				T1->TASK_Resotre(pic_ary[i + 1]);
 				T1->TASK_Delete(pic_ary[i]);
-				W1->Trig_Create(pic_ary[i + 1]->Pos_X(), pic_ary[i + 1]->Pos_Y(), 200, 150, 1);
+				W1->Trig_Create(pic_ary[i + 1]->Pos_X()+50, pic_ary[i + 1]->Pos_Y()+50, 200-50, 150-50, 1);
 				i++;
 				
 			}
@@ -360,6 +364,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			//esc
 			if (cvWaitKey(10) == 27 | i>picnum-5)
 			{
+				play->Stop();
 				//destroy namedWindow
 				destroyWindow("AW");
 				timer1->Enabled = false;
