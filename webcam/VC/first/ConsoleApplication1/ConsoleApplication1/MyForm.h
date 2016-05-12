@@ -40,6 +40,7 @@ namespace ConsoleApplication1 {
 	private: System::Windows::Forms::ToolStripMenuItem^  查看紀錄ToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  關於ToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  關於ToolStripMenuItem1;
+	private: System::Windows::Forms::Button^  button2;
 	public:
 		//Time
 		int time = 0;
@@ -87,6 +88,7 @@ namespace ConsoleApplication1 {
 			this->查看紀錄ToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->關於ToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->關於ToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -183,11 +185,24 @@ namespace ConsoleApplication1 {
 			this->關於ToolStripMenuItem1->Text = L"關於";
 			this->關於ToolStripMenuItem1->Click += gcnew System::EventHandler(this, &MyForm::關於ToolStripMenuItem1_Click);
 			// 
+			// button2
+			// 
+			this->button2->Font = (gcnew System::Drawing::Font(L"PMingLiU", 24, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(136)));
+			this->button2->Location = System::Drawing::Point(24, 407);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(240, 95);
+			this->button2->TabIndex = 4;
+			this->button2->Text = L"教學";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(960, 576);
+			this->Controls->Add(this->button2);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->button1);
@@ -235,44 +250,13 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 
 		//Create Picture
 		#define picnum 20+4
-		//1 row
-		//Picture *p1 = new Picture("picture1", 1, "C:\\project\\AR\\image\\base1.png", 0, 0);
-		Picture *p2 = new Picture("picture2", 2, "C:\\project\\AR\\image\\base1.png", 200, 0);
-		Picture *p3 = new Picture("picture3", 3, "C:\\project\\AR\\image\\base1.png", 400, 0);
-		Picture *p4 = new Picture("picture4", 4, "C:\\project\\AR\\image\\base1.png", 600, 0);
-		Picture *p5 = new Picture("picture5", 5, "C:\\project\\AR\\image\\base1.png", 800, 0);
-		//2 row
-		Picture *p6 = new Picture("picture6", 6, "C:\\project\\AR\\image\\base1.png", 800, 150);
-		Picture *p7 = new Picture("picture7", 7, "C:\\project\\AR\\image\\base1.png", 600, 150);
-		Picture *p8 = new Picture("picture8", 8, "C:\\project\\AR\\image\\base1.png", 400, 150);
-		Picture *p9 = new Picture("picture9", 9, "C:\\project\\AR\\image\\base1.png", 200, 150);
-		//Picture *p10 = new Picture("picture10", 10, "C:\\project\\AR\\image\\base1.png", 0, 150);
-		//3 row
-		//Picture *p11 = new Picture("picture11", 11, "C:\\project\\AR\\image\\base1.png", 0, 300);
-		Picture *p12 = new Picture("picture12", 12, "C:\\project\\AR\\image\\base1.png", 200, 300);
-		Picture *p13 = new Picture("picture13", 13, "C:\\project\\AR\\image\\base1.png", 400, 300);
-		Picture *p14 = new Picture("picture14", 14, "C:\\project\\AR\\image\\base1.png", 600, 300);
-		Picture *p15 = new Picture("picture15", 15, "C:\\project\\AR\\image\\base1.png", 800, 300);
-		//4 row
-		Picture *p16 = new Picture("picture16", 16, "C:\\project\\AR\\image\\base1.png", 800, 450);
-		Picture *p17 = new Picture("picture17", 17, "C:\\project\\AR\\image\\base1.png", 600, 450);
-		Picture *p18 = new Picture("picture18", 18, "C:\\project\\AR\\image\\base1.png", 400, 450);
-		Picture *p19 = new Picture("picture19", 19, "C:\\project\\AR\\image\\base1.png", 200, 450);
-		//Picture *p20 = new Picture("picture20", 20, "C:\\project\\AR\\image\\base1.png", 0, 450);
-		//5 row
-		Picture *p21 = new Picture("picture21", 21, "C:\\project\\AR\\image\\base1.png",200, 600);
-		Picture *p22=  new Picture("picture22", 22, "C:\\project\\AR\\image\\base1.png",400, 600);
-		Picture *p23 = new Picture("picture23", 23, "C:\\project\\AR\\image\\base1.png",600, 600);
-		Picture *p24 = new Picture("picture24", 24, "C:\\project\\AR\\image\\base1.png",800, 600);
-		//6 row
-		Picture *p25 = new Picture("picture25", 25, "C:\\project\\AR\\image\\base1.png",800, 750);
-		Picture *p26 = new Picture("picture26", 26, "C:\\project\\AR\\image\\base1.png",600, 750);
-		Picture *p27 = new Picture("picture27", 27, "C:\\project\\AR\\image\\base1.png",400, 750);
-		Picture *p28 = new Picture("picture28", 28, "C:\\project\\AR\\image\\base1.png",200, 750);
-		//Picture Array
+		//Create Picture
+		Picture *p1 = new Picture("picture1", 1, "C:\\project\\AR\\image\\base1.png", 0, 0);
+		
+		/*//Picture Array
 		Picture *pic_ary[picnum] =
 		{
-			p2, p3, p4, p5, p6, p7, p8, p9, p12, p13, p14, p15, p16, p17, p18, p19, p21, p22, p23, p24, p25, p26, p27, p28
+			p1,p2, p3, p4, p5, p6, p7, p8, p9,p10,p11,p12, p13, p14, p15, p16, p17, p18, p19,p20,p21, p22, p23, p24
 		};
 
 		//Load and inseert TASK
@@ -285,8 +269,14 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			}
 			T1->TASK_Create(pic_ary[i]);
 			T1->TASK_Delete(pic_ary[i]);
+		}*/
+		if (p1->Picture_Load() != 0)
+		{
+			MessageBox::Show("Picture is error");
+			exit(1);
 		}
-		T1->TASK_Resotre(pic_ary[0]);
+		T1->TASK_Create(p1);
+		T1->TASK_Resotre(p1);
 		//Init Camera
 		VideoCapture capture(0);
 		capture.read(frame);
@@ -302,7 +292,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 
 		//Trigger Counter
 		unsigned char i = 0;
-		W1->Trig_Create(pic_ary[1]->Pos_X()+5, pic_ary[1]->Pos_Y()+5, 200-50, 150-50, 1);
+		W1->Trig_Create(p1->Pos_X(), p1->Pos_Y(), 100, 75, 1);
 		//formal 
 	#if 0
 		while (1)
@@ -339,7 +329,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			imshow("AW", frames);
 		}
 
-	#else//special 
+	#elif 0//special 
 		while (1)
 		{
 			//Display Webcam Image
@@ -354,7 +344,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			{
 				T1->TASK_Resotre(pic_ary[i + 1]);
 				T1->TASK_Delete(pic_ary[i]);
-				W1->Trig_Create(pic_ary[i + 1]->Pos_X()+50, pic_ary[i + 1]->Pos_Y()+50, 200-50, 150-50, 1);
+				W1->Trig_Create(pic_ary[i + 1]->Pos_X(), pic_ary[i + 1]->Pos_Y(), 100, 75, 1);
 				i++;
 				
 			}
@@ -363,6 +353,60 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			imshow("AW", frames);
 			//esc
 			if (cvWaitKey(10) == 27 | i>picnum-5)
+			{
+				play->Stop();
+				//destroy namedWindow
+				destroyWindow("AW");
+				timer1->Enabled = false;
+				break;
+			}
+		}
+	#else 
+		//X Position,Y Position,flag dirction
+		int x = 1;
+		int y = 1;
+		int flag = 0;
+		while (1)
+		{
+			//Display Webcam Image
+			Mat frames = W1->Catch_image();
+			
+				if (T1->table_id[1] == 1)disp->Image_puts(frames, T1->table_1[1]);
+				
+				//Update Position,Trigger Position
+				p1->Add_Position(x, y);
+				W1->Trig_Create(p1->Pos_X(), p1->Pos_Y(), 100, 75, 1);
+				if (!flag)
+				{
+					//Color Trigger => position
+					if ((W1->Trig_func1() == 1) && (x < 500))
+					{
+						x += 100;
+					}
+					else if ((W1->Trig_func1() == 1) && (x >= 500))
+					{
+						y = y + 75;
+						flag = 1;
+					}
+				}
+				else
+				{
+					//Color Trigger => negative
+					if ((W1->Trig_func1() == 1) && (x >= 10))
+					{
+						x -= 100;
+					}
+					else if ((W1->Trig_func1() == 1) && (x <= 10))
+					{
+						y = y + 75;
+						flag = 0;
+					}
+				}
+			waitKey(30);
+			namedWindow("AW", WINDOW_NORMAL);
+			imshow("AW", frames);
+			//esc
+			if (cvWaitKey(10) == 27 | y > 700)
 			{
 				play->Stop();
 				//destroy namedWindow
@@ -390,6 +434,9 @@ private: System::Void 關於ToolStripMenuItem1_Click(System::Object^  sender, Syst
 	MyForm1^ MyForms = gcnew MyForm1();
 	MyForms->Show();
 	
+}
+private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+
 }
 };
 }
