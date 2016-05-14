@@ -252,7 +252,9 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		#define picnum 20+4
 		//Create Picture
 		Picture *p1 = new Picture("picture1", 1, "C:\\project\\AR\\image\\base1.png", 0, 0);
-		
+		Picture *p2 = new Picture("picture2", 2, "C:\\project\\AR\\image\\right.png", 0, 0);
+		Picture *p3 = new Picture("picture3", 3, "C:\\project\\AR\\image\\left.png", 0, 0);
+		//Picture *p4 = new Picture("picture4", 4, "C:\\project\\AR\\image\\bottom.png", 0, 0);
 		/*//Picture Array
 		Picture *pic_ary[picnum] =
 		{
@@ -272,11 +274,31 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		}*/
 		if (p1->Picture_Load() != 0)
 		{
-			MessageBox::Show("Picture is error");
+			MessageBox::Show("Picture1 is error");
 			exit(1);
 		}
+		if (p2->Picture_Load() != 0)
+		{
+			MessageBox::Show("Picture2 is error");
+			exit(1);
+		}
+		if (p3->Picture_Load() != 0)
+		{
+			MessageBox::Show("Picture3 is error");
+			exit(1);
+		}
+		/*if (p4->Picture_Load() != 0)
+		{
+			MessageBox::Show("Picture4 is error");
+			exit(1);
+		}*/
 		T1->TASK_Create(p1);
-		T1->TASK_Resotre(p1);
+		//T1->TASK_Resotre(p1);
+		T1->TASK_Create(p2);
+		T1->TASK_Create(p3);
+		//T1->TASK_Create(p4);
+
+		
 		//Init Camera
 		VideoCapture capture(0);
 		capture.read(frame);
@@ -299,7 +321,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		{
 			//Display Webcam Image
 			Mat frames = W1->Catch_image();
-			//Display ALL Image
+		T1->TASK_Create(p2);	//Display ALL Image
 			for (int i = 0; i < MAX_TASK - 1; i++)
 			{
 				if (T1->table_id[i] == 1)disp->Image_puts(frames, T1->table_1[i]);
@@ -373,11 +395,17 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			
 				if (T1->table_id[1] == 1)disp->Image_puts(frames, T1->table_1[1]);
 				
+			
 				//Update Position,Trigger Position
 				p1->Add_Position(x, y);
+				p2->Add_Position(x, y+75);
+				p3->Add_Position(x, y + 75);
+
 				W1->Trig_Create(p1->Pos_X(), p1->Pos_Y(), 100, 75, 1);
 				if (!flag)
 				{
+					//
+					if (T1->table_id[2])disp->Image_puts(frames, T1->table_1[2]);
 					//Color Trigger => position
 					if ((W1->Trig_func1() == 1) && (x < 500))
 					{
@@ -391,6 +419,8 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 				}
 				else
 				{
+					//
+					if (T1->table_id[3])disp->Image_puts(frames, T1->table_1[3]);
 					//Color Trigger => negative
 					if ((W1->Trig_func1() == 1) && (x >= 10))
 					{
@@ -406,7 +436,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			namedWindow("AW", WINDOW_NORMAL);
 			imshow("AW", frames);
 			//esc
-			if (cvWaitKey(10) == 27 | y > 700)
+			if (cvWaitKey(10) == 27 | y > 600)
 			{
 				play->Stop();
 				//destroy namedWindow

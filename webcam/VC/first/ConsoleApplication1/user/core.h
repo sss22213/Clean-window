@@ -408,7 +408,7 @@ class webcam
 				//return Sum_pixel;
 				///NON black Percentage
 				
-				if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > 0.03)
+				if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > 0.1)
 				{
 					//Call Action Function
 					return i;
