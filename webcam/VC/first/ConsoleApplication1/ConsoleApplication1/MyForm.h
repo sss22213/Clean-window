@@ -97,11 +97,11 @@ namespace ConsoleApplication1 {
 			this->button1->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->button1->Font = (gcnew System::Drawing::Font(L"PMingLiU", 20.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->button1->Location = System::Drawing::Point(346, 407);
+			this->button1->Location = System::Drawing::Point(571, 398);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(258, 95);
 			this->button1->TabIndex = 0;
-			this->button1->Text = L"開始";
+			this->button1->Text = L"正式測驗";
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
@@ -189,11 +189,11 @@ namespace ConsoleApplication1 {
 			// 
 			this->button2->Font = (gcnew System::Drawing::Font(L"PMingLiU", 24, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->button2->Location = System::Drawing::Point(24, 407);
+			this->button2->Location = System::Drawing::Point(179, 397);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(240, 95);
 			this->button2->TabIndex = 4;
-			this->button2->Text = L"教學";
+			this->button2->Text = L"教學模式";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
@@ -395,7 +395,6 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			
 				if (T1->table_id[1] == 1)disp->Image_puts(frames, T1->table_1[1]);
 				
-			
 				//Update Position,Trigger Position
 				p1->Add_Position(x, y);
 				p2->Add_Position(x, y+75);
@@ -466,6 +465,195 @@ private: System::Void 關於ToolStripMenuItem1_Click(System::Object^  sender, Syst
 	
 }
 private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+	//
+	Mat frame;
+	Mat frame1;
+	Mat frame2;
+	//Display
+	DScreen *disp = new DScreen;
+
+	//Load TASK,Put on picture into frame  
+	TASK *T1 = new TASK;
+	T1->TASK_Init();
+
+	//Create Picture
+	//Create Picture
+	Picture *p1 = new Picture("picture1", 1, "C:\\project\\AR\\image\\base1.png", 0, 0);
+	Picture *p2 = new Picture("picture2", 2, "C:\\project\\AR\\image\\right.png", 0, 0);
+	Picture *p3 = new Picture("picture3", 3, "C:\\project\\AR\\image\\left.png", 0, 0);
+	Picture *p4 = new Picture("picture4", 4, "C:\\project\\AR\\image\\happy01.png",100,300);
+	Picture *p5 = new Picture("picture5", 5, "C:\\project\\AR\\image\\happy02.png",100,300);
+	Picture *p6 = new Picture("picture6", 6, "C:\\project\\AR\\image\\happy03.png",100,300);
+	Picture *p7 = new Picture("picture7", 7, "C:\\project\\AR\\image\\finally.png", 0, 0);
+	//
+	if (p1->Picture_Load() != 0)
+	{
+		MessageBox::Show("Picture1 is error");
+		exit(1);
+	}
+	if (p2->Picture_Load() != 0)
+	{
+		MessageBox::Show("Picture2 is error");
+		exit(1);
+	}
+	if (p3->Picture_Load() != 0)
+	{
+		MessageBox::Show("Picture3 is error");
+		exit(1);
+	}
+	if (p4->Picture_Load() != 0)
+	{
+		MessageBox::Show("Picture4 is error");
+		exit(1);
+	}
+	if (p5->Picture_Load() != 0)
+	{
+		MessageBox::Show("Picture4 is error");
+		exit(1);
+	}
+	if (p6->Picture_Load() != 0)
+	{
+		MessageBox::Show("Picture4 is error");
+		exit(1);
+	}
+	if (p7->Picture_Load() != 0)
+	{
+		MessageBox::Show("Picture4 is error");
+		exit(1);
+	}
+	//
+	T1->TASK_Create(p1);
+	T1->TASK_Create(p2);
+	T1->TASK_Create(p3);
+	T1->TASK_Create(p4);
+	T1->TASK_Create(p5);
+	T1->TASK_Create(p6);
+	T1->TASK_Create(p7);
+	//
+	T1->TASK_Delete(p5);
+	T1->TASK_Delete(p6);
+	T1->TASK_Delete(p7);
+	//Init Camera
+	VideoCapture capture(0);
+	capture.read(frame);
+
+
+	webcam *W1 = new webcam(capture, 1280, 720, 30);
+	W1->webcam_Trig_init();
+	
+	//Trigger Counter
+	//signed char i = 0;
+	W1->Trig_Create(p1->Pos_X(), p1->Pos_Y(), 100, 75, 1);
+
+	
+	//X Position,Y Position,flag dirction
+	int x = 1;
+	int y = 1;
+	int flag = 0;
+	//Picture number counter
+	unsigned char counter = 0;
+	while (1)
+	{
+		//Display Webcam Image
+		Mat frames = W1->Catch_image();
+		for (int i = 0; i < 8; i++)
+		{
+			if (T1->table_id[i] == 1)disp->Image_puts(frames, T1->table_1[i]);
+		}
+			
+
+		//Update Position,Trigger Position
+		p1->Add_Position(x, y);
+		p2->Add_Position(x, y + 75);
+		p3->Add_Position(x, y + 75);
+
+		W1->Trig_Create(p1->Pos_X(), p1->Pos_Y(), 100, 75, 1);
+		//caule picture number 
+		if (counter > 0 && counter!=6)
+		{
+			T1->TASK_Delete(p4);
+			T1->TASK_Delete(p6);
+			T1->TASK_Create(p5);
+		}
+		else if (counter == 6)
+		{
+			T1->TASK_Delete(p5);
+			T1->TASK_Create(p6);
+		}
+		//
+		if (!flag)
+		{
+			T1->TASK_Delete(p3);
+			T1->TASK_Create(p2);
+			//
+			//if (T1->table_id[2])disp->Image_puts(frames, T1->table_1[2]);
+			//Color Trigger => position
+			if ((W1->Trig_func1() == 1) && (x < 500))
+			{
+				x += 100;
+				counter++;
+			}
+			else if ((W1->Trig_func1() == 1) && (x >= 500))
+			{
+				y = y + 75;
+				flag = 1;
+				counter++;
+			}
+		}
+		else
+		{
+			T1->TASK_Delete(p2);
+			T1->TASK_Create(p3);
+			//
+			//if (T1->table_id[3])disp->Image_puts(frames, T1->table_1[3]);
+			//Color Trigger => negative
+			if ((W1->Trig_func1() == 1) && (x >= 10))
+			{
+				x -= 100;
+				counter++;
+			}
+			else if ((W1->Trig_func1() == 1) && (x <= 10))
+			{
+				y = y + 75;
+				flag = 0;
+				counter++;
+			}
+		}
+		waitKey(30);
+		namedWindow("AW", WINDOW_NORMAL);
+		imshow("AW", frames);
+		//esc
+		if (y > 100)
+		{
+			while (cvWaitKey(10) != 27 )
+			{
+				Mat frames = W1->Catch_image();
+				T1->TASK_Delete(p1);
+				T1->TASK_Delete(p2);
+				T1->TASK_Delete(p3);
+				T1->TASK_Delete(p4);
+				T1->TASK_Delete(p5);
+				T1->TASK_Delete(p6);
+				for (int i = 0; i < 8; i++)
+				{
+					if (T1->table_id[i] == 1)disp->Image_puts(frames, T1->table_1[i]);
+				}
+				T1->TASK_Create(p7);
+				waitKey(30);
+				namedWindow("AW", WINDOW_NORMAL);
+				imshow("AW", frames);
+			}
+			//destroy namedWindow
+			destroyWindow("AW");
+			break;
+		}
+		if (cvWaitKey(10) == 27)
+		{
+			destroyWindow("AW");
+			break;
+		}
+	}
+	
 
 }
 };
