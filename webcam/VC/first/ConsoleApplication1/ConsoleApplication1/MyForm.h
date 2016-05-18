@@ -168,8 +168,9 @@ namespace ConsoleApplication1 {
 			// 查看紀錄ToolStripMenuItem
 			// 
 			this->查看紀錄ToolStripMenuItem->Name = L"查看紀錄ToolStripMenuItem";
-			this->查看紀錄ToolStripMenuItem->Size = System::Drawing::Size(124, 22);
+			this->查看紀錄ToolStripMenuItem->Size = System::Drawing::Size(152, 22);
 			this->查看紀錄ToolStripMenuItem->Text = L"查看紀錄";
+			this->查看紀錄ToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::查看紀錄ToolStripMenuItem_Click);
 			// 
 			// 關於ToolStripMenuItem
 			// 
@@ -234,7 +235,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		time = 0;
 		//Play sound
 		SoundPlayer^ play=gcnew SoundPlayer;
-		play->SoundLocation = "C:\\project\\AR\\Bad.wav";
+		play->SoundLocation = "C:\\project\\AR\\bb.wav";
 		play->Load();
 		play->Play();
 		//
@@ -432,6 +433,8 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 					}
 				}
 			waitKey(30);
+			//mirror
+			flip(frames, frames, 1);
 			namedWindow("AW", WINDOW_NORMAL);
 			imshow("AW", frames);
 			//esc
@@ -477,7 +480,6 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 	T1->TASK_Init();
 
 	//Create Picture
-	//Create Picture
 	Picture *p1 = new Picture("picture1", 1, "C:\\project\\AR\\image\\base1.png", 0, 0);
 	Picture *p2 = new Picture("picture2", 2, "C:\\project\\AR\\image\\right.png", 0, 0);
 	Picture *p3 = new Picture("picture3", 3, "C:\\project\\AR\\image\\left.png", 0, 0);
@@ -486,49 +488,26 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 	Picture *p6 = new Picture("picture6", 6, "C:\\project\\AR\\image\\happy03.png",100,300);
 	Picture *p7 = new Picture("picture7", 7, "C:\\project\\AR\\image\\finally.png", 0, 0);
 	//
-	if (p1->Picture_Load() != 0)
+	Picture *P[7] = {
+	p1,p2,p3,p4,p5,p6,p7
+	};
+	for (unsigned char i = 0; i < 7; i++)
 	{
-		MessageBox::Show("Picture1 is error");
-		exit(1);
+		if (P[i]->Picture_Load() != 0)
+		{
+			MessageBox::Show("Picture is error");
+			exit(1);
+		}
+		T1->TASK_Create(P[i]);
 	}
-	if (p2->Picture_Load() != 0)
+	//mirror
+	for (unsigned char i = 3; i < 7; i++)
 	{
-		MessageBox::Show("Picture2 is error");
-		exit(1);
+		P[i]->mirror();
+		
 	}
-	if (p3->Picture_Load() != 0)
-	{
-		MessageBox::Show("Picture3 is error");
-		exit(1);
-	}
-	if (p4->Picture_Load() != 0)
-	{
-		MessageBox::Show("Picture4 is error");
-		exit(1);
-	}
-	if (p5->Picture_Load() != 0)
-	{
-		MessageBox::Show("Picture4 is error");
-		exit(1);
-	}
-	if (p6->Picture_Load() != 0)
-	{
-		MessageBox::Show("Picture4 is error");
-		exit(1);
-	}
-	if (p7->Picture_Load() != 0)
-	{
-		MessageBox::Show("Picture4 is error");
-		exit(1);
-	}
-	//
-	T1->TASK_Create(p1);
-	T1->TASK_Create(p2);
-	T1->TASK_Create(p3);
-	T1->TASK_Create(p4);
-	T1->TASK_Create(p5);
-	T1->TASK_Create(p6);
-	T1->TASK_Create(p7);
+
+	
 	//
 	T1->TASK_Delete(p5);
 	T1->TASK_Delete(p6);
@@ -620,6 +599,8 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 			}
 		}
 		waitKey(30);
+		//mirror
+		flip(frames, frames, 1);
 		namedWindow("AW", WINDOW_NORMAL);
 		imshow("AW", frames);
 		//esc
@@ -640,6 +621,8 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 				}
 				T1->TASK_Create(p7);
 				waitKey(30);
+				//mirror
+				flip(frames, frames, 1);
 				namedWindow("AW", WINDOW_NORMAL);
 				imshow("AW", frames);
 			}
@@ -655,6 +638,8 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 	}
 	
 
+}
+private: System::Void 查看紀錄ToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 }
 };
 }

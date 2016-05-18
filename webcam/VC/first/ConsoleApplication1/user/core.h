@@ -113,6 +113,14 @@ class Picture :public Mat
 		{
 			return image;
 		}
+		void change_Picture(Mat oviage)
+		{
+			this->image = oviage;
+		}
+		void mirror()
+		{
+			flip(image, image, 1);
+		}
 		//friend class
 		friend class TASK;
 		friend class DScreen;
@@ -213,6 +221,7 @@ class DScreen : public Mat
 			P1->image = result;
 			return 0;
 		}
+
 		int Image_Mov(Picture *P1, int x, int y)
 		{
 			P1->position_x += x;
@@ -223,7 +232,7 @@ class DScreen : public Mat
 };
 
 //webcam class
-class webcam
+class webcam : public Mat
 {
 	private:
 		//Trig Range
@@ -281,7 +290,7 @@ class webcam
 
 		Mat Catch_image()
 		{
-			static Mat frame;
+			Mat frame;
 			capture.read(frame);
 			return frame;
 		}
@@ -324,6 +333,7 @@ class webcam
 			this->Effective[prior1]= -1;
 			return 0;
 		}
+		
 		/**Backgroung_Trigger**/
 		int Trig_func()
 		{
@@ -352,16 +362,10 @@ class webcam
 					imageROI1 = update_frame(Rect(Trig_X[i], Trig_Y[i], Trig_regX[i], Trig_regY[i]));
 					//threshold
 					
-					threshold(imageROI1, imageROI0, threshold_num, 255, THRESH_BINARY_INV);
-					double Sum_pixel = 0;
-					for (int i = 0; i < 3; i++)
-					{
-						//Scalar summary
-						Sum_pixel += sum(imageROI0)[i];
-					}
-
+					threshold(imageROI1, imageROI0, threshold_num,1, THRESH_BINARY_INV);
+					
 					//NON black Percentage
-					if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > Trig_Percent)
+						if ((float)sum(imageROI0)[0] / ((float)Trig_regX[i] * (float)Trig_regY[i]) > Trig_Percent)
 					{
 						//Call Action Function
 						return i;
@@ -399,16 +403,16 @@ class webcam
 				cvtColor(imageROI1, hsv, CV_BGR2HSV);
 				inRange(hsv, Scalar(90, 100, 0), Scalar(130, 255, 255), b);
 
-				double Sum_pixel = 0;
+				/*double Sum_pixel = 0;
 				for (unsigned char i = 0; i < 3; i++)
 				{
 					//Scalar summary
 					Sum_pixel += sum(b)[i];
-				}
+				}*/
 				//return Sum_pixel;
 				///NON black Percentage
 				
-				if (Sum_pixel / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0 * 3.0) > 0.3)
+				if ((float)sum(b)[0] / ((float)Trig_regX[i] * (float)Trig_regY[i] * 255.0) > 0.7)
 				{
 					//Call Action Function
 					return i;
