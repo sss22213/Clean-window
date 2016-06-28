@@ -17,6 +17,7 @@ namespace ConsoleApplication1 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Threading;
 	using namespace cv;
 	/// <summary>
 	/// Summary for MyForm
@@ -41,6 +42,7 @@ namespace ConsoleApplication1 {
 	private: System::Windows::Forms::ToolStripMenuItem^  關於ToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  關於ToolStripMenuItem1;
 	private: System::Windows::Forms::Button^  button2;
+	private: System::Windows::Forms::Label^  label3;
 	public:
 		//Time
 		int time = 0;
@@ -89,6 +91,7 @@ namespace ConsoleApplication1 {
 			this->關於ToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->關於ToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -168,7 +171,7 @@ namespace ConsoleApplication1 {
 			// 查看紀錄ToolStripMenuItem
 			// 
 			this->查看紀錄ToolStripMenuItem->Name = L"查看紀錄ToolStripMenuItem";
-			this->查看紀錄ToolStripMenuItem->Size = System::Drawing::Size(152, 22);
+			this->查看紀錄ToolStripMenuItem->Size = System::Drawing::Size(124, 22);
 			this->查看紀錄ToolStripMenuItem->Text = L"查看紀錄";
 			this->查看紀錄ToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::查看紀錄ToolStripMenuItem_Click);
 			// 
@@ -190,7 +193,7 @@ namespace ConsoleApplication1 {
 			// 
 			this->button2->Font = (gcnew System::Drawing::Font(L"PMingLiU", 24, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->button2->Location = System::Drawing::Point(179, 397);
+			this->button2->Location = System::Drawing::Point(171, 397);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(240, 95);
 			this->button2->TabIndex = 4;
@@ -198,11 +201,24 @@ namespace ConsoleApplication1 {
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Font = (gcnew System::Drawing::Font(L"PMingLiU", 36, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(136)));
+			this->label3->Location = System::Drawing::Point(375, 272);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(212, 48);
+			this->label3->TabIndex = 5;
+			this->label3->Text = L"準備開始";
+			this->label3->Click += gcnew System::EventHandler(this, &MyForm::label3_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(960, 576);
+			this->Controls->Add(this->label3);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
@@ -233,11 +249,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		timer1->Interval = 1000;
 		//initial time number
 		time = 0;
-		//Play sound
-		SoundPlayer^ play=gcnew SoundPlayer;
-		play->SoundLocation = "C:\\project\\AR\\bb.wav";
-		play->Load();
-		play->Play();
+		
 		//
 		Mat frame;
 		Mat frame1;
@@ -252,9 +264,9 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 		//Create Picture
 		#define picnum 20+4
 		//Create Picture
-		Picture *p1 = new Picture("picture1", 1, "C:\\project\\AR\\image\\base1.png", 0, 0);
-		Picture *p2 = new Picture("picture2", 2, "C:\\project\\AR\\image\\right.png", 0, 0);
-		Picture *p3 = new Picture("picture3", 3, "C:\\project\\AR\\image\\left.png", 0, 0);
+		Picture *p1 = new Picture("picture1", 1, "..\\..\\..\\..\\..\\image\\base1.png", 0, 0);
+		Picture *p2 = new Picture("picture2", 2, "..\\..\\..\\..\\..\\image\\right.png", 0, 0);
+		Picture *p3 = new Picture("picture3", 3, "..\\..\\..\\..\\..\\image\\left.png", 0, 0);
 		//Picture *p4 = new Picture("picture4", 4, "C:\\project\\AR\\image\\bottom.png", 0, 0);
 		/*//Picture Array
 		Picture *pic_ary[picnum] =
@@ -419,7 +431,6 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 				}
 				else
 				{
-					//
 					if (T1->table_id[3])disp->Image_puts(frames, T1->table_1[3]);
 					//Color Trigger => negative
 					if ((W1->Trig_func1() == 1) && (x >= 10))
@@ -440,10 +451,21 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			//esc
 			if (cvWaitKey(10) == 27 | y > 600)
 			{
+				timer1->Enabled = false;
+				//Play sound
+				SoundPlayer^ play = gcnew SoundPlayer;
+				play->SoundLocation = "..\\..\\..\\..\\..\\clap.wav";
+				play->Load();
+				play->Play();
+				Thread::Sleep(5000);
 				play->Stop();
+				delete play;
+				if (time<20)label3->Text = "好棒";
+				else if (time>=20 && time < 30)label3->Text = "好";
+				else if (time>=30 && time < 40)label3->Text = "請加油";
+				else if (time >= 40)label3->Text = "請多加加油";
 				//destroy namedWindow
 				destroyWindow("AW");
-				timer1->Enabled = false;
 				break;
 			}
 		}
@@ -632,6 +654,7 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 		}
 		if (cvWaitKey(10) == 27)
 		{
+			
 			destroyWindow("AW");
 			break;
 		}
@@ -640,6 +663,8 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 
 }
 private: System::Void 查看紀錄ToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void label3_Click(System::Object^  sender, System::EventArgs^  e) {
 }
 };
 }
